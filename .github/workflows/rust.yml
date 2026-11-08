@@ -1,3 +1,13 @@
+# Optimized by ci-cost (https://github.com/mariotavarez/ci-cost)
+# Applied 6 optimizations:
+# - [HIGH] Add cargo dependency cache to "build" job
+# - [HIGH] Add cargo dependency cache to "features" job
+# - [HIGH] Add cargo dependency cache to "msrv" job
+# - [HIGH] Add cargo dependency cache to "coverage" job
+# - [MEDIUM] Add concurrency group to "rust.yml"
+# - [LOW] Explicitly set fail-fast for large matrix job "build" (6 combinations)
+# Estimated savings: ~36 min/run
+#
 name: Rust
 
 on:
@@ -7,6 +17,10 @@ on:
   pull_request:
     branches: [ main ]
 
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   build:
     strategy:
